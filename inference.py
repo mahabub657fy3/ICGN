@@ -22,7 +22,7 @@ def main():
     elif args.model_t == 'robust':
         model_name_list = ['adv_incv3', 'ens_inc_res_v2', 'res50_sin', 'res50_sin_in', 'res50_sin_fine_in']
     elif args.model_t == 'normal':
-        model_name_list = [ 'incv3', 'vgg16', 'googlenet', 'res50', 'res152', 'dense121']
+        model_name_list = [ 'vgg16', 'googlenet', 'res50', 'incv3', 'res152', 'dense121']
     elif args.model_t == 'cifar':
         #CIFAR-10 classifiers
         model_name_list = ['cifar10_vgg19_bn','cifar10_vgg16_bn','cifar10_vgg13_bn','cifar10_resnet56','cifar10_resnet44','cifar10_resnet32','cifar10_resnet20',]

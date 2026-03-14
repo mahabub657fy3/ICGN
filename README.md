@@ -48,16 +48,6 @@ Requirements: NVIDIA GPU with CUDA 11.8+. The environment.yml pins all exact pac
 
 ### Training
 
-**CIFAR-10**
-```bash
-python train.py \
-  --dataset cifar10 \
-  --train_dir /data/cifar10_png/train \
-  --model_type cifar10_resnet56 \
-  --label_flag ALL \
-  --epochs 10
-```
-
 **ImageNet — ResNet-50**
 ```bash
 python train.py \
@@ -68,19 +58,30 @@ python train.py \
   --epochs 10
 ```
 
-**ImageNet — Inception-v3**
+**CIFAR-10**
 ```bash
 python train.py \
-  --dataset imagenet \
-  --train_dir /data/ImageNet/ILSVRC2012_img_train \
-  --model_type incv3 \
-  --label_flag N8 \
+  --dataset cifar10 \
+  --train_dir /data/cifar10_png/train \
+  --model_type cifar10_resnet56 \
+  --label_flag ALL \
   --epochs 10
 ```
 
 Checkpoints are saved to `checkpoints_{dataset}/{model_type}/model-{epoch}.pth` and `prompt-{epoch}.pth`.
 
 ### Generating Adversarial Examples
+
+**ImageNet**
+```bash
+python eval.py \
+  --dataset imagenet \
+  --data_dir /data/neurips2017_dev \
+  --model_type incv3 \
+  --label_flag N8 \
+  --load_g_path checkpoints_imagenet/incv3/model-9.pth \
+  --load_cond_path checkpoints_imagenet/incv3/prompt-9.pth
+```
 
 **CIFAR-10**
 ```bash
@@ -94,17 +95,6 @@ python eval.py \
   --val_txt Cifar_10_val.txt
 ```
 
-**ImageNet**
-```bash
-python eval.py \
-  --dataset imagenet \
-  --data_dir /data/neurips2017_dev \
-  --model_type incv3 \
-  --label_flag N8 \
-  --load_g_path checkpoints_imagenet/incv3/model-9.pth \
-  --load_cond_path checkpoints_imagenet/incv3/prompt-9.pth
-```
-
 Generated images are saved to `results_{dataset}/gan_{label_flag}/{model_type}_t{class_id}/images/`.
 
 ---
@@ -112,13 +102,6 @@ Generated images are saved to `results_{dataset}/gan_{label_flag}/{model_type}_t
 ### Measuring Attack Success Rate
 
 ```bash
-# Against a single model
-python inference.py \
-  --dataset imagenet \
-  --test_dir results_imagenet/gan_n8/incv3 \
-  --model_t res50 \
-  --label_flag N8
-
 # Against all standard models
 python inference.py \
   --dataset imagenet \
@@ -143,7 +126,7 @@ python inference.py \
 | Argument | Default | Description |
 |---|---|---|
 | `--dataset` | `imagenet` | `cifar10` or `imagenet` |
-| `--model_type` | `incv3` | Surrogate model (see table below) |
+| `--model_type` | `res50` | Surrogate model (see table below) |
 | `--label_flag` | `N8` | Class subset (see table below) |
 | `--eps` | `16` | L∞ perturbation budget (pixels, divided by 255) |
 | `--nz` | `16` | Noise dimension |
@@ -156,7 +139,7 @@ python inference.py \
 
 | Dataset | `--model_type` |
 |---|---|
-| CIFAR-10 | `cifar10_resnet56`, `cifar10_resnet44`, `cifar10_resnet32`, `cifar10_resnet20`, `cifar10_vgg19_bn`, `cifar10_vgg16_bn`, `cifar10_vgg13_bn` |
+| CIFAR-10 [Cifar-10](https://www.cs.toronto.edu/~kriz/cifar-10-python.tar.gz)| `cifar10_resnet56`, `cifar10_resnet44`, `cifar10_resnet32`, `cifar10_resnet20`, `cifar10_vgg19_bn`, `cifar10_vgg16_bn`, `cifar10_vgg13_bn` |
 | ImageNet | `res50`, `res152`, `incv3`, `incv4`, `vgg16`, `googlenet`, `dense121` |
 
 ### Class Subsets (`--label_flag`)
@@ -181,7 +164,7 @@ cifar10_png/
   Cifar_10_val.txt   # <filename>,<label> per line
 ```
 
-**ImageNet (NeurIPS 2017 dev set)** — Organize as:
+**ImageNet ([NeurIPS validation set](https://www.kaggle.com/c/nips-2017-non-targeted-adversarial-attack) )** — Organize as:
 ```
 neurips2017_dev/
   images/

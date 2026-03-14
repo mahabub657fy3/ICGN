@@ -139,7 +139,7 @@ python inference.py \
 
 | Dataset | `--model_type` |
 |---|---|
-| CIFAR-10 [Cifar-10](https://www.cs.toronto.edu/~kriz/cifar-10-python.tar.gz)| `cifar10_resnet56`, `cifar10_resnet44`, `cifar10_resnet32`, `cifar10_resnet20`, `cifar10_vgg19_bn`, `cifar10_vgg16_bn`, `cifar10_vgg13_bn` |
+| [Cifar-10](https://www.cs.toronto.edu/~kriz/cifar-10-python.tar.gz)| `cifar10_resnet56`, `cifar10_resnet44`, `cifar10_resnet32`, `cifar10_resnet20`, `cifar10_vgg19_bn`, `cifar10_vgg16_bn`, `cifar10_vgg13_bn` |
 | ImageNet | `res50`, `res152`, `incv3`, `incv4`, `vgg16`, `googlenet`, `dense121` |
 
 ### Class Subsets (`--label_flag`)

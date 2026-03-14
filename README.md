@@ -58,7 +58,7 @@ python train.py \
 ```bash
 python train.py \
   --dataset cifar10 \
-  --train_dir /data/cifar10_png/train \
+  --train_dir /data/cifar10/train \
   --model_type cifar10_resnet56 \
   --label_flag ALL \
   --epochs 10
@@ -86,8 +86,8 @@ python eval.py \
   --data_dir /data/cifar10_png/test \
   --model_type cifar10_vgg19_bn \
   --label_flag ALL \
-  --load_g_path checkpoints_cifar10/cifar10_resnet56/model-9.pth \
-  --load_cond_path checkpoints_cifar10/cifar10_resnet56/prompt-9.pth \
+  --load_g_path model-9.pth \
+  --load_cond_path prompt-9.pth \
   --val_txt Cifar_10_val.txt
 ```
 
@@ -101,8 +101,8 @@ Generated images are saved to `results_{dataset}/gan_{label_flag}/{model_type}_t
 # Against all standard models
 python inference.py \
   --dataset imagenet \
-  --test_dir results_imagenet/gan_n8/incv3 \
-  --model_t all \
+  --test_dir results_imagenet/gan_n8/res50 \
+  --model_t normal \
   --label_flag N8
 
 # Against CIFAR-10 classifiers
@@ -131,12 +131,12 @@ python inference.py \
 | `--n_ctx` | `16` | Number of learnable context tokens |
 | `--batch_size` | auto | 128 for CIFAR-10, 8 for ImageNet |
 
-### Supported Models
+### Victim Models
 
 | Dataset | `--model_type` |
 |---|---|
 | [Cifar-10](https://www.cs.toronto.edu/~kriz/cifar-10-python.tar.gz)| `cifar10_resnet56`, `cifar10_resnet44`, `cifar10_resnet32`, `cifar10_resnet20`, `cifar10_vgg19_bn`, `cifar10_vgg16_bn`, `cifar10_vgg13_bn` |
-| ImageNet | `res50`, `res152`, `incv3`, `incv4`, `vgg16`, `googlenet`, `dense121` |
+| ImageNet | `res50`, `res152`, `incv3`, `vgg16`, `googlenet`, `dense121` |
 
 ### Class Subsets (`--label_flag`)
 

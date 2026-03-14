@@ -152,16 +152,15 @@ python inference.py \
 | Dataset | `--model_type` |
 |---|---|
 | CIFAR-10 | `cifar10_resnet56`, `cifar10_resnet44`, `cifar10_resnet32`, `cifar10_resnet20`, `cifar10_vgg19_bn`, `cifar10_vgg16_bn`, `cifar10_vgg13_bn` |
-| ImageNet | `res50`, `res152`, `incv3`, `incv4`, `vgg16`, `googlenet`, `dense121`, `inc_res_v2`, `adv_incv3`, `ens_inc_res_v2` |
+| ImageNet | `res50`, `res152`, `incv3`, `incv4`, `vgg16`, `googlenet`, `dense121` |
 
 ### Class Subsets (`--label_flag`)
 
 | Dataset | Flag | # Classes |
 |---|---|---|
 | CIFAR-10 | `ALL` | 10 |
-| CIFAR-10 | `C8`, `C5`, `C3` | 8 / 5 / 3 |
 | ImageNet | `N8` | 8 |
-| ImageNet | `C20`, `C50`, `C100`, `C200` | 20 / 50 / 100 / 200 |
+| ImageNet | `C50`| 50 |
 
 ---
 

@@ -33,7 +33,7 @@ ICGN is a generative framework for **transfer-based targeted adversarial attacks
 ```bash
 # 1. Create and activate the conda environment
 conda env create -f environment.yml
-conda activate LP-LFGA
+conda activate ICGN
 
 # 2. Install CLIP from OpenAI
 pip install git+https://github.com/openai/CLIP.git

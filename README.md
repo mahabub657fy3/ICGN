@@ -77,16 +77,6 @@ python train.py \
 
 Checkpoints are saved to `checkpoints_{dataset}/{model_type}/model-{epoch}.pth` and `prompt-{epoch}.pth`.
 
----
-
-Pretrained Weights
-<!-- Add your pretrained weights download links below.
-     We recommend uploading to Google Drive, Hugging Face Hub, or GitHub Releases. -->
-DatasetSurrogateLabel SetGeneratorConditionerImageNetInception-v3N8model-9.pthprompt-9.pthImageNetResNet-50C50model-9.pthprompt-9.pthCIFAR-10ResNet-56ALLmodel-9.pthprompt-9.pth
-
-Replace each # with your actual download URL (Google Drive, Hugging Face Hub, or GitHub Releases).
-
-
 ### Generating Adversarial Examples
 
 **CIFAR-10**

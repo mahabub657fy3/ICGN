@@ -24,7 +24,7 @@ def main():
     elif args.model_t == 'normal':
         model_name_list = [ 'vgg16', 'googlenet', 'res50', 'incv3', 'res152', 'dense121']
     elif args.model_t == 'cifar':
-        #CIFAR-10 classifiers
+        #CIFAR-10 classifiers: https://github.com/chenyaofo/pytorch-cifarmodels
         model_name_list = ['cifar10_vgg19_bn','cifar10_vgg16_bn','cifar10_vgg13_bn','cifar10_resnet56','cifar10_resnet44','cifar10_resnet32','cifar10_resnet20',]
     else:
         model_name_list = [args.model_t]

@@ -31,15 +31,11 @@ ICGN is a generative framework for **transfer-based targeted adversarial attacks
 ## Installation
 
 ```bash
-# 1. Clone the repo
-git clone https://github.com/<your-username>/ICGN.git
-cd ICGN
-
-# 2. Create and activate the conda environment (Python 3.10, CUDA 11.8, PyTorch 2.2.1)
+# 1. Create and activate the conda environment (Python 3.10, CUDA 11.8, PyTorch 2.2.1)
 conda env create -f environment.yml
 conda activate LP-LFGA
 
-# 3. Install CLIP from OpenAI
+# 2. Install CLIP from OpenAI
 pip install git+https://github.com/openai/CLIP.git
 ```
 Requirements: NVIDIA GPU with CUDA 11.8+. The environment.yml pins all exact package versions used in our experiments (PyTorch 2.2.1, torchvision 0.17.1, timm 1.0.22, numpy 1.26.4, pandas 2.3.3).

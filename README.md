@@ -1,12 +1,17 @@
-# ICGN: Instance-Conditioned Generative Network
+# ICGN: Instance-Conditioned Generative Attack Network
 
-A unified framework for generating targeted adversarial examples using a CLIP-conditioned generator, supporting both **CIFAR-10** and **ImageNet**.
+ICGN is a generative framework for **transfer-based targeted adversarial attacks** that replaces weak, class-static conditioning with an **instance-adaptive semantic token** derived from CLIP. By integrating per-image context vectors into the generator via Multi-Depth modulation (MDM), ICGN achieves strong targeted transferability — even under severely limited training data — without any query access to the victim model.
+
+**Highlights:**
+- 🎯 **+19.09 pp** average targeted success rate over the strongest baseline on ImageNet (325k training images)
+- 🔥 **29.66% TSR** under extreme low-data conditions (10k images), while all prior methods collapse below 0.30%
+- 🧠 Instance-conditioned via CLIP + learnable prompts + Multi-Depth modulation
+
+---
 
 ## Overview
 
 ![ICGN Framework Overview](figures/Overall_pipeline.png)
-
-Transfer-based targeted adversarial attacks pose significant challenges as they must elicit target-consistent misclassification on unfamiliar victim architectures without any query access. Despite advancements in multi-target generative frameworks that enhance inference speed, they frequently depend on extensive training datasets and utilize very weak conditioning, generally including class labels or precomputed CLIP text embeddings by straightforward concatenation into intermediate feature maps. This class-static conditioning offers merely a rudimentary control signal and does not leverage the more nuanced target semantics that may be adaptively aligned with each source instance. To mitigate these limitations, we propose an Instance-Conditioned Generative Network (ICGN) that generates an input-dependent conditioning representation by deriving an instance-specific semantic token from CLIP through a streamlined network, integrating it with learnable context vectors, and incorporating it into the generator through feature-wise linear modulation at various scales. This instance-adaptive conditioning approach facilitates enhanced semantic alignment between each source image and the target class, unlike the class-static prompts utilized by previous systems, and produces effective adversarial transferability even with limited training data. Experiments on ImageNet and CIFAR-10 reveal that ICGN significantly enhances the targeted success rate (TSR) across all data conditions: in the 325k ImageNet training set, ICGN achieves an average TSR of 62.53\%, representing an increase of 19.09 percentage points over the most robust baseline, while in the severely low-data condition of the 10k training set, ICGN reaches a TSR of 29.66\%, whereas all previous methods falter to below 0.30\%. Ablation investigations confirm the supplementary roles of each suggested component.
 
 ## Repository Structure
 

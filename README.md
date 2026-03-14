@@ -6,12 +6,9 @@ A unified framework for generating targeted adversarial examples using a CLIP-co
 
 ## Overview
 
-ICGN trains a generative adversarial perturbation network conditioned on CLIP text features derived from learnable prompts (CoCoOp-style). At inference time, the generator produces L∞-bounded adversarial images targeted at a chosen class subset — without any per-image optimization.
-<!-- Optional: place your framework figure here.
-     Save the image to docs/overview.png (or any path) and uncomment the line below. -->
-<!-- ![ICGN Framework Overview](docs/overview.png) -->
-
+ICGN trains a generative adversarial perturbation network conditioned on CLIP text features derived from learnable prompts. At inference time, the generator produces L∞-bounded adversarial images targeted at a chosen class subset — without any per-image optimization.
 ---
+![ICGN Framework Overview](docs/overview.png) -->
 
 ## Repository Structure
 
@@ -19,9 +16,8 @@ ICGN trains a generative adversarial perturbation network conditioned on CLIP te
 ├── train.py                  # Unified training script (CIFAR-10 + ImageNet)
 ├── eval.py                   # Unified evaluation / generation script
 ├── inference.py              # Attack success rate measurement across models
-├── generator.py              # MDMGenerator (FiLM-modulated U-Net)
-├── prompt_learner.py         # CLIP-based Conditioner (CoCoOp)
-├── image_transformer.py      # TwoCropTransform + random rotation
+├── generator.py              # MDMGenerator
+├── prompt_learner.py         # CLIP-based Conditioner
 ├── utils.py                  # Models, normalization, data loading, class indices
 ├── imagenet_class_index.json
 └── cifar10_class_index.json

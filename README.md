@@ -131,13 +131,6 @@ python inference.py \
 | `--n_ctx` | `16` | Number of learnable context tokens |
 | `--batch_size` | auto | 128 for CIFAR-10, 8 for ImageNet |
 
-### Victim Models
-
-| Dataset | `--model_type` |
-|---|---|
-| [Cifar-10](https://www.cs.toronto.edu/~kriz/cifar-10-python.tar.gz)| `cifar10_resnet56`, `cifar10_resnet44`, `cifar10_resnet32`, `cifar10_resnet20`, `cifar10_vgg19_bn`, `cifar10_vgg16_bn`, `cifar10_vgg13_bn` |
-| ImageNet | `res50`, `res152`, `incv3`, `vgg16`, `googlenet`, `dense121` |
-
 ### Class Subsets (`--label_flag`)
 
 | Dataset | Flag | # Classes |

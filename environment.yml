@@ -1,4 +1,4 @@
-name: LP-LFGA
+name: ICGN
 channels:
   - pytorch
   - nvidia

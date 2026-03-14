@@ -32,20 +32,14 @@ ICGN trains a generative adversarial perturbation network conditioned on CLIP te
 git clone https://github.com/<your-username>/ICGN.git
 cd ICGN
 
-# 2. Create a conda environment
-conda create -n icgn python=3.10 -y
-conda activate icgn
+# 2. Create and activate the conda environment (Python 3.10, CUDA 11.8, PyTorch 2.2.1)
+conda env create -f environment.yml
+conda activate LP-LFGA
 
-# 3. Install PyTorch (adjust CUDA version as needed)
-pip install torch torchvision --index-url https://download.pytorch.org/whl/cu118
-
-# 4. Install remaining dependencies
-pip install clip-by-openai timm pandas tqdm pillow
+# 3. Install CLIP from OpenAI
+pip install git+https://github.com/openai/CLIP.git
 ```
-
-> Install CLIP from OpenAI: `pip install git+https://github.com/openai/CLIP.git`
-
----
+Requirements: NVIDIA GPU with CUDA 11.8+. The environment.yml pins all exact package versions used in our experiments (PyTorch 2.2.1, torchvision 0.17.1, timm 1.0.22, numpy 1.26.4, pandas 2.3.3).
 
 ## Quick Start
 
@@ -84,6 +78,14 @@ python train.py \
 Checkpoints are saved to `checkpoints_{dataset}/{model_type}/model-{epoch}.pth` and `prompt-{epoch}.pth`.
 
 ---
+
+Pretrained Weights
+<!-- Add your pretrained weights download links below.
+     We recommend uploading to Google Drive, Hugging Face Hub, or GitHub Releases. -->
+DatasetSurrogateLabel SetGeneratorConditionerImageNetInception-v3N8model-9.pthprompt-9.pthImageNetResNet-50C50model-9.pthprompt-9.pthCIFAR-10ResNet-56ALLmodel-9.pthprompt-9.pth
+
+Replace each # with your actual download URL (Google Drive, Hugging Face Hub, or GitHub Releases).
+
 
 ### Generating Adversarial Examples
 

@@ -31,7 +31,7 @@ ICGN is a generative framework for **transfer-based targeted adversarial attacks
 ## Installation
 
 ```bash
-# 1. Create and activate the conda environment (Python 3.10, CUDA 11.8, PyTorch 2.2.1)
+# 1. Create and activate the conda environment
 conda env create -f environment.yml
 conda activate LP-LFGA
 

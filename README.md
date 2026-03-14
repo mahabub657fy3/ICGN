@@ -7,13 +7,9 @@ A unified framework for generating targeted adversarial examples using a CLIP-co
 ## Overview
 
 ICGN trains a generative adversarial perturbation network conditioned on CLIP text features derived from learnable prompts (CoCoOp-style). At inference time, the generator produces L∞-bounded adversarial images targeted at a chosen class subset — without any per-image optimization.
-
-```
-Input Image  ──►  FiLM/MDM Generator  ──►  Adversarial Image
-                        ▲
-               CLIP Conditioner
-               (Learnable Prompts)
-```
+<!-- Optional: place your framework figure here.
+     Save the image to docs/overview.png (or any path) and uncomment the line below. -->
+<!-- ![ICGN Framework Overview](docs/overview.png) -->
 
 ---
 

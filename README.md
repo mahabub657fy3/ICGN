@@ -1,7 +1,7 @@
 # ICGN: Instance-Conditioned Generative Network
-```
+
 ICGN is a generative framework for **transfer-based targeted adversarial attacks** that replaces weak, class-static conditioning with an **instance-adaptive semantic token** derived from CLIP. By integrating per-image context vectors into the generator via Multi-Depth modulation (MDM), ICGN achieves strong targeted transferability — even under severely limited training data — without any query access to the victim model.
-```
+---
 
 ## Overview
 ![ICGN Framework Overview](figures/Overall_pipeline.png)

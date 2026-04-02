@@ -35,7 +35,7 @@ class lowpass(nn.Module):
         return self.gaussian_filter(self.pad(x))
 
 
-class MDM(nn.Module):
+class CFM(nn.Module):
     def __init__(self, cond_dim: int, num_features: int):
         super().__init__()
         self.num_features = num_features
@@ -53,19 +53,19 @@ class MDM(nn.Module):
         return (1.0 + gamma) * x + beta
 
 
-class MDMResnetBlock(nn.Module):
+class MFMResnetBlock(nn.Module):
     def __init__(self, dim: int, cond_dim: int):
         super().__init__()
         self.pad1 = nn.ReflectionPad2d(1)
         self.conv1 = nn.Conv2d(dim, dim, kernel_size=3, stride=1, padding=0, bias=False)
         self.in1 = nn.InstanceNorm2d(dim, affine=False)
-        self.film1 = MDM(cond_dim, dim)
+        self.film1 = CFM(cond_dim, dim)
         self.relu = nn.ReLU(inplace=True)
 
         self.pad2 = nn.ReflectionPad2d(1)
         self.conv2 = nn.Conv2d(dim, dim, kernel_size=3, stride=1, padding=0, bias=False)
         self.in2 = nn.InstanceNorm2d(dim, affine=False)
-        self.film2 = MDM(cond_dim, dim)
+        self.film2 = CFM(cond_dim, dim)
 
     def forward(self, x: torch.Tensor, cond: torch.Tensor) -> torch.Tensor:
         h = self.conv1(self.pad1(x))
@@ -80,7 +80,7 @@ class MDMResnetBlock(nn.Module):
         return x + h
 
 
-class MDMGenerator(nn.Module):
+class MFMGenerator(nn.Module):
     def __init__(self, inception: bool = False, nz: int = 16, k=None, device=None,
                  cond_dim: int = 512, n_resblocks: int = 6):
         super().__init__()
@@ -94,28 +94,28 @@ class MDMGenerator(nn.Module):
         self.pad1 = nn.ReflectionPad2d(3)
         self.conv1 = nn.Conv2d(3, ngf, kernel_size=7, stride=1, padding=0, bias=False)
         self.in1 = nn.InstanceNorm2d(ngf, affine=False)
-        self.film1 = MDM(cond_dim, ngf)
+        self.film1 = CFM(cond_dim, ngf)
         self.relu = nn.ReLU(inplace=True)
 
         self.conv2 = nn.Conv2d(ngf, ngf * 2, kernel_size=3, stride=2, padding=1, bias=False)
         self.in2 = nn.InstanceNorm2d(ngf * 2, affine=False)
-        self.film2 = MDM(cond_dim, ngf * 2)
+        self.film2 = CFM(cond_dim, ngf * 2)
 
         self.conv3 = nn.Conv2d(ngf * 2, ngf * 4, kernel_size=3, stride=2, padding=1, bias=False)
         self.in3 = nn.InstanceNorm2d(ngf * 4, affine=False)
-        self.film3 = MDM(cond_dim, ngf * 4)
+        self.film3 = CFM(cond_dim, ngf * 4)
 
         # Bottleneck
-        self.resblocks = nn.ModuleList([MDMResnetBlock(ngf * 4, cond_dim) for _ in range(n_resblocks)])
+        self.resblocks = nn.ModuleList([MFMResnetBlock(ngf * 4, cond_dim) for _ in range(n_resblocks)])
 
         # Decoder
         self.deconv1 = nn.ConvTranspose2d(ngf * 4, ngf * 2, kernel_size=3, stride=2, padding=1, output_padding=1, bias=False)
         self.in4 = nn.InstanceNorm2d(ngf * 2, affine=False)
-        self.film4 = MDM(cond_dim, ngf * 2)
+        self.film4 = CFM(cond_dim, ngf * 2)
 
         self.deconv2 = nn.ConvTranspose2d(ngf * 2, ngf, kernel_size=3, stride=2, padding=1, output_padding=1, bias=False)
         self.in5 = nn.InstanceNorm2d(ngf, affine=False)
-        self.film5 = MDM(cond_dim, ngf)
+        self.film5 = CFM(cond_dim, ngf)
 
         self.pad_out = nn.ReflectionPad2d(3)
         self.conv_out = nn.Conv2d(ngf, 3, kernel_size=7, stride=1, padding=0)

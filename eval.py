@@ -5,7 +5,7 @@ import torch
 from torchvision import datasets, transforms
 
 from utils import *
-from generator import MDMGenerator
+from generator import MFMGenerator
 from prompt_learner import Conditioner
 
 def fix_labels(test_set, val_txt_path: str):
@@ -35,14 +35,14 @@ def build_generator(args, device):
 
     if dataset == "cifar10":
         scale_size, img_size = 32, 32
-        netG = MDMGenerator(nz=args.nz, k=k_for_gen, device=device).to(device)
+        netG = MFMGenerator(nz=args.nz, k=k_for_gen, device=device).to(device)
     elif dataset == "imagenet":
         if mt == "incv3":
             scale_size, img_size = 300, 299
-            netG = MDMGenerator(inception=True, nz=args.nz, k=k_for_gen, device=device).to(device)
+            netG = MFMGenerator(inception=True, nz=args.nz, k=k_for_gen, device=device).to(device)
         else:
             scale_size, img_size = 256, 224
-            netG = MDMGenerator(nz=args.nz, k=k_for_gen, device=device).to(device)
+            netG = MFMGenerator(nz=args.nz, k=k_for_gen, device=device).to(device)
     else:
         raise ValueError(f"Unsupported dataset: {args.dataset}")
 

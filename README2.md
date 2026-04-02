@@ -326,49 +326,6 @@ Both components are essential and **synergistic** — removing either causes sub
 
 ---
 
-## 💡 Method Overview
-
-### Architecture
-
-```
-Input Image x
-     │
-     ├──── CLIP Image Encoder (frozen) ──► z ∈ ℝ⁵¹²
-     │                                        │
-     │                                   Meta-Net hψ
-     │                                  (Linear→ReLU→Linear)
-     │                                        │
-     │                               Instance bias π(x) ∈ ℝ⁵¹²
-     │                                        │
-     │                          vm(x) = vm + π(x)  [M=16 context tokens]
-     │                                        │
-     │                          [v₁(x),...,vM(x), c_yt]
-     │                                        │
-     │                         CLIP Text Encoder (frozen)
-     │                                        │
-     │                           Conditioning vector c ∈ ℝ⁵¹²
-     │                                        │
-     ├──── Gaussian Low-pass Filter ──► x_low
-     │                                        │
-     └──► MFM Generator ◄─────────── c injected at 17 CFM points
-               │               (3 encoder + 12 ResBlock + 2 decoder)
-               │
-          δ (raw perturbation)
-               │
-     x_adv = clip(x_low + ε·δ, x−ε, x+ε)
-```
-
-### Condition Feature Modulation (CFM)
-
-Each CFM layer performs channel-wise affine modulation:
-
-```
-CFM(h, c) = (1 + γ) ⊙ h + β,    [γ ; β] = Linear(c)
-```
-
-where `γ, β ∈ ℝᶜ` are scaling and shifting coefficients. The linear projection is **initialized to zero**, ensuring identity behavior at training start — critical for stability under limited data.
-
----
 
 ## 📈 Computational Efficiency
 
@@ -380,32 +337,3 @@ where `γ, β ∈ ℝᶜ` are scaling and shifting coefficients. The linear proj
 ICGN achieves superior performance with lower computational cost than CGNC.
 
 ---
-
-## 📝 Citation
-
-If you find this work useful in your research, please cite:
-
-```bibtex
-@article{rahman2025icgn,
-  title     = {Many Men, Many Minds: An Instance-Adaptive Conditioning Approach for Data-Efficient Transferable Targeted Attacks},
-  author    = {Rahman, Md Mahabubur and Zhang, Hui and Chen, Biwei and Peng, Anjie and Zeng, Hui},
-  journal   = {Pattern Recognition},
-  year      = {2025}
-}
-```
-
----
-
-## 📄 License
-
-This project is released under the [MIT License](LICENSE).
-
----
-
-<div align="center">
-
-**Southwest University of Science and Technology · Beijing Normal University**
-
-*For questions or issues, please open a [GitHub Issue](https://github.com/mahabubur657fy3/ICGN/issues).*
-
-</div>

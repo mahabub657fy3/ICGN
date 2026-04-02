@@ -37,7 +37,7 @@ ICGN resolves both failures through two coupled innovations:
 | Component | Description |
 |-----------|-------------|
 | **Instance-Adaptive Prompt Learning (IPL)** | A lightweight meta-network predicts a per-image bias over a frozen CLIP model, producing a distinct target embedding for each source image that captures both target-class semantics and instance-level visual context. |
-| **Multi-Depth Feature Modulation (MFM)** | The conditioning signal is injected at **17 points** across encoder, residual bottleneck, and decoder via channel-wise affine modulation (CFM), ensuring consistent target guidance throughout the generation hierarchy. |
+| **Multi-Depth Feature Modulation (MFM)** | The conditioning signal is injected at **17 points** across encoder, residual bottleneck, and decoder via Condition Feature Modulation (CFM), ensuring consistent target guidance throughout the generation hierarchy. |
 
 > **Key result:** ICGN is the *only* method to maintain meaningful attack success rate (>25%) under severely limited training data (10k–20k samples), while consistently outperforming all baselines at every training scale.
 

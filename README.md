@@ -72,7 +72,7 @@ ICGN/
 
 ## 📥 Pretrained Checkpoints
 
-We provide pretrained generator and conditioner weights for all surrogate models and protocols. Download and place them under the corresponding `checkpoints_{dataset}/{model_type}/` directory.
+We provide pretrained generator and conditioner weights for N8 protocol. Download and place them under the corresponding `checkpoints_{dataset}/{model_type}/` directory.
 
 ### ImageNet
 

@@ -68,6 +68,19 @@ ICGN/
 └── figures/
     └── Overall_pipeline.png   # Architecture overview figure
 ```
+---
+
+## 📥 Pretrained Checkpoints
+
+We provide pretrained generator and conditioner weights for all surrogate models and protocols. Download and place them under the corresponding `checkpoints_{dataset}/{model_type}/` directory.
+
+### ImageNet
+
+| Surrogate | Protocol | Generator |
+|-----------|----------|-----------|-------------|
+| ResNet-50 | N8 (8 classes) | [Checkpoints]([#](https://drive.google.com/drive/folders/1JuNY0SRnPYuYWJ-OGcOXI1Ajnkg9C6V6?usp=drive_link)) |
+| Inception-v3 | N8 (8 classes) | [Checkpoints]([#](https://drive.google.com/drive/folders/1Nj6aMTjEYHiY8XWfRuRfgPElnGMwcQjy?usp=drive_link)) |
+
 
 ---
 

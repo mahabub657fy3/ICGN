@@ -13,7 +13,7 @@
 [![GitHub Stars](https://img.shields.io/github/stars/mahabubur657fy3/ICGN?style=for-the-badge&logo=github)](https://github.com/mahabubur657fy3/ICGN)
 [![Python](https://img.shields.io/badge/Python-3.9+-blue?style=for-the-badge&logo=python)](https://www.python.org/)
 [![PyTorch](https://img.shields.io/badge/PyTorch-2.2.1-orange?style=for-the-badge&logo=pytorch)](https://pytorch.org/)
-[![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
+
 
 <br>
 

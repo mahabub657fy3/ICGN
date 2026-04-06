@@ -2,7 +2,7 @@
 
 <h1>
   <img src="figures/Overall_pipeline.png" width="100%" alt="ICGN Pipeline"><br><br>
-  An Instance-Adaptive Conditioning Approach for Data-Efficient Transferable Targeted Attacks
+ Instance-Adaptive Conditioning for Data-Efficient Transferable Targeted Attacks
 </h1>
 
 

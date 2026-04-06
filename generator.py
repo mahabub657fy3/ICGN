@@ -8,12 +8,11 @@ class lowpass(nn.Module):
     def __init__(self, channels=3, k=None, kernel_size=7):
         super().__init__()
 
-        # Robust handling for k=None or k<=0
         if k is not None and k > 0:
             kernel_size = 4 * k + 1
             sigma = float(k)
         else:
-            sigma = 2.0  # reasonable default
+            sigma = 2.0
 
         self.kernel_size = kernel_size
         self.channels = channels
@@ -41,7 +40,6 @@ class CFM(nn.Module):
         self.num_features = num_features
         self.fc = nn.Linear(cond_dim, 2 * num_features)
 
-        # Initialize to identity modulation (gamma=0, beta=0)
         nn.init.zeros_(self.fc.weight)
         nn.init.zeros_(self.fc.bias)
 
@@ -59,23 +57,23 @@ class MFMResnetBlock(nn.Module):
         self.pad1 = nn.ReflectionPad2d(1)
         self.conv1 = nn.Conv2d(dim, dim, kernel_size=3, stride=1, padding=0, bias=False)
         self.in1 = nn.InstanceNorm2d(dim, affine=False)
-        self.film1 = CFM(cond_dim, dim)
+        self.CFM1 = CFM(cond_dim, dim)
         self.relu = nn.ReLU(inplace=True)
 
         self.pad2 = nn.ReflectionPad2d(1)
         self.conv2 = nn.Conv2d(dim, dim, kernel_size=3, stride=1, padding=0, bias=False)
         self.in2 = nn.InstanceNorm2d(dim, affine=False)
-        self.film2 = CFM(cond_dim, dim)
+        self.CFM2 = CFM(cond_dim, dim)
 
     def forward(self, x: torch.Tensor, cond: torch.Tensor) -> torch.Tensor:
         h = self.conv1(self.pad1(x))
         h = self.in1(h)
-        h = self.film1(h, cond)
+        h = self.CFM1(h, cond)
         h = self.relu(h)
 
         h = self.conv2(self.pad2(h))
         h = self.in2(h)
-        h = self.film2(h, cond)
+        h = self.CFM2(h, cond)
 
         return x + h
 
@@ -94,16 +92,16 @@ class MFMGenerator(nn.Module):
         self.pad1 = nn.ReflectionPad2d(3)
         self.conv1 = nn.Conv2d(3, ngf, kernel_size=7, stride=1, padding=0, bias=False)
         self.in1 = nn.InstanceNorm2d(ngf, affine=False)
-        self.film1 = CFM(cond_dim, ngf)
+        self.CFM1 = CFM(cond_dim, ngf)
         self.relu = nn.ReLU(inplace=True)
 
         self.conv2 = nn.Conv2d(ngf, ngf * 2, kernel_size=3, stride=2, padding=1, bias=False)
         self.in2 = nn.InstanceNorm2d(ngf * 2, affine=False)
-        self.film2 = CFM(cond_dim, ngf * 2)
+        self.CFM2 = CFM(cond_dim, ngf * 2)
 
         self.conv3 = nn.Conv2d(ngf * 2, ngf * 4, kernel_size=3, stride=2, padding=1, bias=False)
         self.in3 = nn.InstanceNorm2d(ngf * 4, affine=False)
-        self.film3 = CFM(cond_dim, ngf * 4)
+        self.CFM3 = CFM(cond_dim, ngf * 4)
 
         # Bottleneck
         self.resblocks = nn.ModuleList([MFMResnetBlock(ngf * 4, cond_dim) for _ in range(n_resblocks)])
@@ -111,11 +109,11 @@ class MFMGenerator(nn.Module):
         # Decoder
         self.deconv1 = nn.ConvTranspose2d(ngf * 4, ngf * 2, kernel_size=3, stride=2, padding=1, output_padding=1, bias=False)
         self.in4 = nn.InstanceNorm2d(ngf * 2, affine=False)
-        self.film4 = CFM(cond_dim, ngf * 2)
+        self.CFM4 = CFM(cond_dim, ngf * 2)
 
         self.deconv2 = nn.ConvTranspose2d(ngf * 2, ngf, kernel_size=3, stride=2, padding=1, output_padding=1, bias=False)
         self.in5 = nn.InstanceNorm2d(ngf, affine=False)
-        self.film5 = CFM(cond_dim, ngf)
+        self.CFM5 = CFM(cond_dim, ngf)
 
         self.pad_out = nn.ReflectionPad2d(3)
         self.conv_out = nn.Conv2d(ngf, 3, kernel_size=7, stride=1, padding=0)
@@ -134,17 +132,17 @@ class MFMGenerator(nn.Module):
         # Encoder
         x = self.conv1(self.pad1(input))
         x = self.in1(x)
-        x = self.film1(x, cond)
+        x = self.CFM1(x, cond)
         x = self.relu(x)
 
         x = self.conv2(x)
         x = self.in2(x)
-        x = self.film2(x, cond)
+        x = self.CFM2(x, cond)
         x = self.relu(x)
 
         x = self.conv3(x)
         x = self.in3(x)
-        x = self.film3(x, cond)
+        x = self.CFM3(x, cond)
         x = self.relu(x)
 
         # Bottleneck
@@ -154,22 +152,20 @@ class MFMGenerator(nn.Module):
         # Decoder
         x = self.deconv1(x)
         x = self.in4(x)
-        x = self.film4(x, cond)
+        x = self.CFM4(x, cond)
         x = self.relu(x)
 
         x = self.deconv2(x)
         x = self.in5(x)
-        x = self.film5(x, cond)
+        x = self.CFM5(x, cond)
         x = self.relu(x)
 
         x = self.conv_out(self.pad_out(x))
         x = self.tanh(x)  # [-1,1]
 
-        # Crop to match input size (important for odd sizes like 255)
         if x.shape[2] != H or x.shape[3] != W:
             x = x[:, :, :H, :W]
 
-        # Scale to eps and constrain in L∞ ball
         delta = x * eps
         adv = input_low + delta
         adv = torch.min(torch.max(adv, input - eps), input + eps)

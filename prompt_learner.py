@@ -24,12 +24,12 @@ class _CLIPTextEncoder(nn.Module):
             pos_emb = F.pad(pos_emb, (0, 0, 0, x.shape[1] - pos_emb.shape[0]))
         x = x + pos_emb.unsqueeze(0)
 
-        x = x.permute(1, 0, 2)  # [seq_len, B, D]
+        x = x.permute(1, 0, 2)  
         x = self.transformer(x)
-        x = x.permute(1, 0, 2)  # [B, seq_len, D]
+        x = x.permute(1, 0, 2) 
         x = self.ln_final(x)
 
-        eot_pos = tokenized_prompts.argmax(dim=-1)  # [B]
+        eot_pos = tokenized_prompts.argmax(dim=-1)  
         x = x[torch.arange(x.size(0), device=x.device), eot_pos]
         
         if self.text_projection is not None:
@@ -55,8 +55,8 @@ class PromptLearner(nn.Module):
         self.n_classes = len(classnames)
         self.context_length = clip_model.context_length
 
-        ctx_dim = clip_model.ln_final.weight.shape[0]  # 512
-        vis_dim = clip_model.visual.output_dim  # 512
+        ctx_dim = clip_model.ln_final.weight.shape[0] 
+        vis_dim = clip_model.visual.output_dim 
 
         self.meta_net = nn.Sequential(
             nn.Linear(vis_dim, vis_dim // 16),
@@ -78,7 +78,7 @@ class PromptLearner(nn.Module):
             ctx = torch.empty(n_ctx, ctx_dim, dtype=dtype, device=device)
             nn.init.normal_(ctx, std=0.02)
 
-        self.ctx = nn.Parameter(ctx)  # [n_ctx, ctx_dim]
+        self.ctx = nn.Parameter(ctx) 
 
         classnames = [c.replace("_", " ") for c in classnames]
         prompt_prefix = " ".join(["X"] * n_ctx)
@@ -97,16 +97,16 @@ class PromptLearner(nn.Module):
                 tokens = tokens[:, :self.context_length]
             tokenized_all.append(tokens)
         
-        tokenized_all = torch.cat(tokenized_all, dim=0)  # [n_cls, context_length]
+        tokenized_all = torch.cat(tokenized_all, dim=0)
         self.register_buffer("tokenized_prompts_all", tokenized_all)
 
         with torch.no_grad():
-            emb = clip_model.token_embedding(tokenized_all).type(dtype)  # [n_cls, context_length, ctx_dim]
+            emb = clip_model.token_embedding(tokenized_all).type(dtype) 
 
-        self.register_buffer("token_prefix", emb[:, :1, :])  # [n_cls, 1, ctx_dim]
+        self.register_buffer("token_prefix", emb[:, :1, :]) 
         
         suffix_start = 1 + n_ctx
-        self.register_buffer("token_suffix", emb[:, suffix_start:, :])  # [n_cls, suffix_len, ctx_dim]
+        self.register_buffer("token_suffix", emb[:, suffix_start:, :])
 
         print(f"Initialized PromptLearner with {len(classnames)} classes, n_ctx={n_ctx}")
 
@@ -119,15 +119,15 @@ class PromptLearner(nn.Module):
         B = image_features.shape[0]
         image_features = image_features.to(self.device).to(self.dtype)
         
-        bias = self.meta_net(image_features)  # [B, ctx_dim]
+        bias = self.meta_net(image_features) 
         
-        ctx = self.ctx.unsqueeze(0).expand(B, -1, -1)  # [B, n_ctx, ctx_dim]
-        ctx_shifted = ctx + bias.unsqueeze(1)  # [B, n_ctx, ctx_dim]
+        ctx = self.ctx.unsqueeze(0).expand(B, -1, -1)  
+        ctx_shifted = ctx + bias.unsqueeze(1) 
 
-        prefix = self.token_prefix[target_labels]  # [B, 1, ctx_dim]
-        suffix = self.token_suffix[target_labels]  # [B, suffix_len, ctx_dim]
+        prefix = self.token_prefix[target_labels]  
+        suffix = self.token_suffix[target_labels] 
         
-        prompt_embeds = torch.cat([prefix, ctx_shifted, suffix], dim=1)  # [B, context_length, ctx_dim]
+        prompt_embeds = torch.cat([prefix, ctx_shifted, suffix], dim=1)
         
         return prompt_embeds
 
@@ -156,7 +156,6 @@ class Conditioner(nn.Module):
         self.dtype = torch.float32
         self.n_ctx = n_ctx
         
-        # Build components
         self.prompt_learner = PromptLearner(
             classnames=classnames,
             clip_model=clip_model,
@@ -207,13 +206,13 @@ class Conditioner(nn.Module):
         images = images.to(self.device)
         target_local = target_local.to(self.device)
         
-        img_feat = self.encode_image(images)  # [B, 512]
+        img_feat = self.encode_image(images)  
 
-        prompt_embeds = self.prompt_learner(img_feat, target_local)  # [B, context_length, 512]
+        prompt_embeds = self.prompt_learner(img_feat, target_local) 
         
-        tokenized = self.prompt_learner.tokenized_prompts_all[target_local]  # [B, context_length]
+        tokenized = self.prompt_learner.tokenized_prompts_all[target_local]  
 
-        text_feat = self.text_encoder(prompt_embeds, tokenized)  # [B, 512]
+        text_feat = self.text_encoder(prompt_embeds, tokenized)  
         text_feat = text_feat / text_feat.norm(dim=-1, keepdim=True)
             
         return text_feat
@@ -221,7 +220,6 @@ class Conditioner(nn.Module):
     def train(self, mode: bool = True):
         """Set training mode. Only prompt_learner is trainable."""
         super().train(mode)
-        # Keep CLIP in eval mode
         self._clip.eval()
         for p in self._clip.parameters():
             p.requires_grad_(False)

@@ -84,8 +84,8 @@ We provide pretrained generator and conditioner weights for N8 protocol. Downloa
 
 | Surrogate | Protocol | Generator |
 |-----------|----------|-----------|
-| ResNet-56 | C5 (5 classes) | [Checkpoints]([https://drive.google.com/drive/folders/1JuNY0SRnPYuYWJ-OGcOXI1Ajnkg9C6V6?usp=drive_link](https://drive.google.com/drive/folders/1jU8xaLkiDhdylFmQB9zoOEAZPF5RaplG?usp=drive_link))|
-| VGG19 | C5 (5 classes) | [Checkpoints]([https://drive.google.com/drive/folders/1Nj6aMTjEYHiY8XWfRuRfgPElnGMwcQjy?usp=drive_link](https://drive.google.com/drive/folders/1PfQ9dioPNVSSc26aMNgkJKoqjuBxbs72?usp=drive_link))|
+| ResNet-56 | C5 (5 classes) | [Checkpoints](https://drive.google.com/drive/folders/1PfQ9dioPNVSSc26aMNgkJKoqjuBxbs72?usp=drive_link)|
+| VGG19 | C5 (5 classes) | [Checkpoints](https://drive.google.com/drive/folders/1jU8xaLkiDhdylFmQB9zoOEAZPF5RaplG?usp=drive_link)|
 ---
 
 ## ⚙️ Installation

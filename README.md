@@ -2,10 +2,9 @@
 
 <h1>
   <img src="figures/Overall_pipeline.png" width="100%" alt="ICGN Pipeline"><br><br>
-  Many Men, Many Minds
+  An Instance-Adaptive Conditioning Approach for Data-Efficient Transferable Targeted Attacks
 </h1>
 
-<h3>An Instance-Adaptive Conditioning Approach for Data-Efficient Transferable Targeted Attacks</h3>
 
 <br>
 
@@ -81,6 +80,12 @@ We provide pretrained generator and conditioner weights for N8 protocol. Downloa
 | ResNet-50 | N8 (8 classes) | [Checkpoints](https://drive.google.com/drive/folders/1JuNY0SRnPYuYWJ-OGcOXI1Ajnkg9C6V6?usp=drive_link)|
 | Inception-v3 | N8 (8 classes) | [Checkpoints](https://drive.google.com/drive/folders/1Nj6aMTjEYHiY8XWfRuRfgPElnGMwcQjy?usp=drive_link)|
 
+### Cifar-10
+
+| Surrogate | Protocol | Generator |
+|-----------|----------|-----------|
+| ResNet-56 | C5 (5 classes) | [Checkpoints]([https://drive.google.com/drive/folders/1JuNY0SRnPYuYWJ-OGcOXI1Ajnkg9C6V6?usp=drive_link](https://drive.google.com/drive/folders/1jU8xaLkiDhdylFmQB9zoOEAZPF5RaplG?usp=drive_link))|
+| VGG19 | C5 (5 classes) | [Checkpoints]([https://drive.google.com/drive/folders/1Nj6aMTjEYHiY8XWfRuRfgPElnGMwcQjy?usp=drive_link](https://drive.google.com/drive/folders/1PfQ9dioPNVSSc26aMNgkJKoqjuBxbs72?usp=drive_link))|
 ---
 
 ## ⚙️ Installation
